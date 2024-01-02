@@ -97,7 +97,7 @@ Your `access_token` is valid for 1 hour. After it expires, you must use the `ref
 
 ### Obtain New Access Token via Refresh Token 
 
-If your access token has expired, use the `refresh_token` obtained during the initial authentication to request a new access token.
+If your access token has expired and the API function returns a 401 status code, indicating unauthorized access due to an invalid or expired token, use the `refresh_token` obtained during the initial authentication to request a new access token.
 
 **Endpoint:**
 ```
