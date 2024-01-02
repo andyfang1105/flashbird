@@ -95,7 +95,7 @@ Your `access_token` is valid for 1 hour. After it expires, you must use the `ref
 }
 ````
 
-## Obtain New Access Token via Refresh Token 
+### Obtain New Access Token via Refresh Token 
 
 If your access token has expired, use the `refresh_token` obtained during the initial authentication to request a new access token.
 
@@ -158,7 +158,8 @@ refreshAccessToken();
 ```
 
 **Response:**
-A successful response will return a new access_token, the duration it's valid for (expires_in), and the type of token (token_type).
+
+A successful response will return a new `access_token`, the duration it's valid for (`expires_in`), and the type of token (`token_type`).
 
 ```json
 {
