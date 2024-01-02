@@ -6,7 +6,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 
 All URLs referenced in the documentation have the following base:
 
-http://localhost:3001/
+http://localhost:3001/api/2024-01/merchant
 
 
 The base URL will change depending on the environment (development, staging, production).
@@ -19,7 +19,7 @@ To interact with the Flashbird API, you must first authenticate to receive an ac
 
 **Endpoint:**
 
-POST /ghost/api/v0.1/authentication/token
+POST /authentication/token
 
 
 **Headers:**
@@ -38,7 +38,7 @@ POST /ghost/api/v0.1/authentication/token
 }
 ```
 
-Replace YOUR_CLIENT_ID, YOUR_CLIENT_SECRET, YOUR_EMAIL_ADDRESS, and YOUR_PASSWORD with your actual Flashbird API credentials.
+Replace BASE_URL, YOUR_CLIENT_ID, YOUR_CLIENT_SECRET, YOUR_EMAIL_ADDRESS, and YOUR_PASSWORD with your actual Flashbird API credentials.
 
 Sample JavaScript Request:
 
@@ -55,7 +55,7 @@ const data = {
 
 async function getAccessToken() {
   try {
-    const response = await fetch('http://localhost:3001/ghost/api/v0.1/authentication/token', {
+    const response = await fetch(`${BASE_URL}/authentication/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -78,9 +78,9 @@ async function getAccessToken() {
 getAccessToken();
 ```
 
-**Response:***
+**Response:**
 
-The response will include the access_token which you'll use for authenticated requests, a refresh_token to obtain new access tokens once they expire, the duration (expires_in) the access token is valid for, and the type of token.
+The response will include the `access_token` which you'll use for authenticated requests, a `refresh_token` to obtain new access tokens once they expire, the duration (1 hour) the access token is valid for, and the type of token.
 
 
 ```json
