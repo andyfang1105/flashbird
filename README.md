@@ -6,11 +6,12 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 
 - [Base URL](#base-url)
 - [Authentication](#authentication)
-  - [Obtaining an Access Token](#obtaining-an-access-token)
+  - [Obtain Access Token and Refresh Token from Flashbird Merchant Console](#obtain-access-token-and-refresh-token-from-flashbird-merchant-console)
   - [Obtain New Access Token via Refresh Token](#obtain-new-access-token-via-refresh-token)
 - [Making Authenticated Requests](#making-authenticated-requests)
 - [Endpoints](#endpoints)
   - [Create Shipment](#create-shipment)
+
 
 
 ## Base URL
@@ -26,85 +27,21 @@ The base URL will change depending on the environment (development, staging, pro
 
 To interact with the Flashbird API, you must first authenticate to receive an access token. Use this token in subsequent requests.
 
-### Obtaining an Access Token
+### Obtain Access Token and Refresh Token from Flashbird Merchant Console
 
-**Endpoint:**
+To get your access token and refresh token directly from the Flashbird Merchant Console:
 
-POST /authentication/token
+1. Log in to the Flashbird Merchant Console.
+2. Ensure the Merchant API is enabled for your account.
+3. Click the "Reset Token" button.
+4. Enter your username and password in the popup dialog.
+5. Your access token and refresh token will be displayed.
 
-
-**Headers:**
-
-- `Content-Type: application/json`
-
-**Body:**
-
-```json
-{
-  "client_id": "YOUR_CLIENT_ID",
-  "client_secret": "YOUR_CLIENT_SECRET",
-  "username": "YOUR_EMAIL_ADDRESS",
-  "password": "YOUR_PASSWORD",
-  "grant_type": "password"
-}
-```
-
-Replace BASE_URL, YOUR_CLIENT_ID, YOUR_CLIENT_SECRET, YOUR_EMAIL_ADDRESS, and YOUR_PASSWORD with your actual Flashbird API credentials.
-
-**Sample JavaScript Request:**
-
-```Javascript
-const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
-
-const data = {
-  client_id: 'mock_client_id',
-  client_secret: 'mock_client_secret',
-  username: 'user@example.com',
-  password: 'securepassword',
-  grant_type: 'password'
-};
-
-async function getAccessToken() {
-  try {
-    const response = await fetch(`${BASE_URL}/authentication/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-    console.log('Access Token:', responseData.access_token);
-    return responseData.access_token;
-  } catch (error) {
-    console.error('Fetching error:', error);
-  }
-}
-
-getAccessToken();
-```
-
-**Response:**
-
-The response will include the `access_token` which you'll use for authenticated requests, a `refresh_token` to obtain new access tokens once they expire, the duration (`expires_in`: 3600 seconds, or 1 hour) the access token is valid for, and the type of token.
-
-Your `access_token` is valid for 1 hour. After it expires, you must use the `refresh_token` to obtain a new `access_token`. 
+**Note:**
+- The access token is valid for 1 hour. If it expires, you can use the refresh token to obtain a new access token.
+- The refresh token is valid for 1 week and will be automatically renewed whenever you use it to obtain a new access token via the method described in the "Obtain New Access Token via Refresh Token" section.
 
 
-```json
-{
-  "access_token": "YOUR_ACCESS_TOKEN",
-  "refresh_token": "YOUR_REFRESH_TOKEN",
-  "expires_in": 3600,
-  "token_type": "Bearer"
-}
-````
 
 ### Obtain New Access Token via Refresh Token 
 
