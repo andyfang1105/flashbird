@@ -40,7 +40,7 @@ POST /authentication/token
 
 Replace BASE_URL, YOUR_CLIENT_ID, YOUR_CLIENT_SECRET, YOUR_EMAIL_ADDRESS, and YOUR_PASSWORD with your actual Flashbird API credentials.
 
-Sample JavaScript Request:
+**Sample JavaScript Request:**
 
 ```Javascript
 const fetch = require('node-fetch');
@@ -119,7 +119,7 @@ Content-Type: application/json
 }
 ```
 
-##Sample JavaScript Request:##
+**Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
 const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
