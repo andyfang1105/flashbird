@@ -29,7 +29,7 @@ To interact with the Flashbird API, you must first authenticate to receive an ac
 
 ### Obtain Access Token and Refresh Token from Flashbird Merchant Console
 
-![Flashbird Logo](images/merchant_api_console.jpg "Flashbird Logo")
+![Flashbird Merchant Console](images/merchant_api_console.jpg "Flashbird Merchant Console")
 
 To get your access token and refresh token directly from the Flashbird Merchant Console:
 
