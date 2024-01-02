@@ -99,17 +99,17 @@ Your `access_token` is valid for 1 hour. After it expires, you must use the `ref
 
 If your access token has expired, use the `refresh_token` obtained during the initial authentication to request a new access token.
 
-##Endpoint:##
+**Endpoint:**
 ```
 POST /authentication/token
 ```
 
-##Headers:##
+**Headers:**
 ```
 Content-Type: application/json
 ```
 
-##Body:##
+**Body:**
 ```json
 {
   "client_id": "YOUR_CLIENT_ID",
@@ -128,7 +128,7 @@ const data = {
   client_id: 'mock_client_id',
   client_secret: 'mock_client_secret',
   grant_type: 'refresh_token',
-  refresh_token: 'vswZN6yDOPQDgxi6RPxz0GQGsNrR9K6THIwTn8ZtTMXwwKpaBNceewwK867hEnUz3d1r9z4KEJbYdpfRKD4Vab0GCdJ3Je45QPdZyu7nT2iY56dma7LFK0XQhUnkRNdPbQUfApgeUE8BihsMpEZ97hAxLyiryaCZ3QUVbT6Dtny5XwbpTYztA3e60EKAsLsGJeduE7bDs4MBurRP4nmgZxz5vmHvrjCxBQUcsdkuKnwcJvKBy9U0SX5kvdk3Sb9'
+  refresh_token: 'mock_refresh_token'
 };
 
 async function refreshAccessToken() {
@@ -157,7 +157,7 @@ refreshAccessToken();
 
 ```
 
-##Response:##
+**Response:**
 A successful response will return a new access_token, the duration it's valid for (expires_in), and the type of token (token_type).
 
 ```json
@@ -167,6 +167,7 @@ A successful response will return a new access_token, the duration it's valid fo
   "token_type": "Bearer"
 }
 ```
+
 
 
 
