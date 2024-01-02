@@ -172,9 +172,7 @@ A successful response will return a new `access_token`, the duration it's valid 
 
 
 
-
-
-### Making Authenticated Requests
+## Making Authenticated Requests
 Once you have the access_token, include it in the Authorization header of your requests:
 
 ```
@@ -186,44 +184,164 @@ headers: {
 Endpoints
 List the available endpoints, their methods, expected input, and output. For example:
 
-## Create Shipment
+### Create Shipment
 **Endpoint:**
 
 ```
 POST /shipments
 ```
 
-Headers:
+**Headers:**
 
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
 ```
-Content-Type: application/json
-Authorization: Bearer YOUR_ACCESS_TOKEN
+Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authentication process.
+
+
+**Body:**
+
+Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections. The `packaging` is an array where each item must include at least the weight.
+
+```json
+{
+  "from": {
+    "name": "Alice Smith",
+    "phone": "(416) 555-0190",
+    "street": "123 Yonge Street",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5B 1N8",
+    "country": "Canada"
+  },
+  "to": {
+    "name": "Bob Brown",
+    "phone": "(416) 555-0132",
+    "street": "456 Queen Street West",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5V 2B7",
+    "country": "Canada"
+  },
+  "packaging": [
+    {
+      "length": "10",
+      "width": "15",
+      "height": "20",
+      "weight": 5
+    }
+  ],
+  "refno": "1234567"
+}
 ```
 
-Body:
+**Sample JavaScript Request:**
 
-Describe the required and optional fields for creating a shipment.
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const endpoint = 'shipments'; // The endpoint for creating shipments
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 
-Sample Request:
+const shipmentData = {
+  "from": {
+    "name": "Alice Smith",
+    "phone": "(416) 555-0190",
+    "street": "123 Yonge Street",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5B 1N8",
+    "country": "Canada"
+  },
+  "to": {
+    "name": "Bob Brown",
+    "phone": "(416) 555-0132",
+    "street": "456 Queen Street West",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5V 2B7",
+    "country": "Canada"
+  },
+  "packaging": [
+    {
+      "length": "10",
+      "width": "15",
+      "height": "20",
+      "weight": 5
+    }
+  ],
+  "refno": "1234567"
+};
 
-Show a sample request using the fetch library.
+async function createShipment() {
+  try {
+    const response = await fetch(`${BASE_URL}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(shipmentData),
+    });
 
-Response:
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-Describe the expected response, including status codes and potential error messages.
+    const responseData = await response.json();
+    console.log('Response Data:', responseData);
+  } catch (error) {
+    console.error('Fetching error:', error);
+  }
+}
 
-Error Handling
-Explain how errors are returned and provide a list of possible error codes and what they mean.
+createShipment();
+```
 
-Rate Limiting
-If applicable, describe any rate limits that apply to the API.
+**Response:**
 
-Additional Resources
-Provide links to any additional resources such as SDKs, libraries, or community tools related to the API.
+The response will provide details about the success or failure of the shipment creation.
 
-Support
-Provide contact information or links for where users can get support.
+- **When Successful (rc is 0):**
+  ```json
+  {
+    "rc": 0,
+    "number": "UNIQUE_SHIPMENT_NUMBER",
+    "refno": "YOUR_REFERENCE_NUMBER",
+    "message": "Successfully created a shipment",
+    "timestamp": 1704152543232
+  }
+  
+  ```
+- **When Failed (rc is -1):**
 
+  Duplicate Reference Number Example:
+
+  ```json
+  {
+    "rc": -1,
+    "refno": "YOUR_REFERENCE_NUMBER",
+    "number": "",
+    "message": "Failed to create the shipment due to duplicate Ref No. (YOUR_REFERENCE_NUMBER) found in shipment UNIQUE_SHIPMENT_NUMBER",
+    "timestamp": 1704152662478
+  }
+  
+  ```
+
+  Out of Service Area Example:
+
+  ```json
+  {
+    "rc": -1,
+    "refno": "YOUR_REFERENCE_NUMBER",
+    "number": "",
+    "message": "FSA/Postal Code A8S is out of service area",
+    "timestamp": 1704152679730
+  }
+  ```
 
 
 
