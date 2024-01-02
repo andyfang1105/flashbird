@@ -2,6 +2,17 @@
 
 Welcome to the Flashbird API documentation. The Flashbird API allows you to programmatically access and manage shipments, providing a simple way to integrate Flashbird's services into your application.
 
+## Table of Contents
+
+- [Base URL](#base-url)
+- [Authentication](#authentication)
+  - [Obtaining an Access Token](#obtaining-an-access-token)
+  - [Obtain New Access Token via Refresh Token](#obtain-new-access-token-via-refresh-token)
+- [Making Authenticated Requests](#making-authenticated-requests)
+- [Endpoints](#endpoints)
+  - [Create Shipment](#create-shipment)
+
+
 ## Base URL
 
 All URLs referenced in the documentation have the following base:
