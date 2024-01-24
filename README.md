@@ -629,6 +629,108 @@ If the labels cannot be created (e.g., due to invalid shipment numbers, lack of 
 
 
 
+## Create Pickup
+
+**Endpoint:**
+```
+POST /pickups
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+
+**Body:**
+Include the details of the contact for pickup in the request body.
+
+```json
+{
+  "contact": {
+    "name": "John Doe",
+    "company": "ABC Company",
+    "phone": "1234567890",
+    "email": "johndoe@example.com",
+    "street": "123 Main Street",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "country": "Canada",
+    "post_code": "M5V 2B7"
+  }
+}
+```
+Replace the details with the actual information for the contact.
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const endpoint = 'pickups'; // The endpoint for creating pickups
+const pickupData = {
+  "contact": {
+    "name": "John Doe",
+    "company": "ABC Company",
+    "phone": "1234567890",
+    "email": "johndoe@example.com",
+    "street": "123 Main Street",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "country": "Canada",
+    "post_code": "M5V 2B7"
+  }
+};
+
+async function createPickup() {
+    try {
+        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(pickupData),
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+    } catch (error) {
+        console.error('Fetching error:', error);
+    }
+}
+
+createPickup();
+```
+
+**Response:**
+Upon successful creation, the response will confirm the pickup request and provide details about the scheduled pickup.
+
+-**When Successful:**
+The response will include details such as the pickup number and the scheduled date and time.
+
+```json
+{
+  "pickupNumber": "PICKUP_NUMBER",
+  "scheduledDate": "2024-01-25",
+  "message": "Pickup scheduled successfully",
+  "timestamp": 1704153662478
+}
+```
+
+-**When Failed:**
+If the pickup cannot be created (e.g., due to invalid contact information, lack of permissions, or other issues), the response will include details about the failure.
+
+
 
 
 
