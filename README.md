@@ -134,7 +134,7 @@ headers: {
 Endpoints
 List the available endpoints, their methods, expected input, and output. For example:
 
-### Create Shipment
+## Create Shipment
 **Endpoint:**
 
 ```
@@ -295,7 +295,7 @@ The response will provide details about the success or failure of the shipment c
 
 
 
-### Update Shipment
+## Update Shipment
 **Endpoint:**
 
 ```
@@ -403,7 +403,7 @@ updateShipment();
   Check ${response.status} and ${errorResponse.errors[0].message}
 
 
-### Delete Shipment
+## Delete Shipment
 **Endpoint:**
 
 ```
