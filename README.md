@@ -730,6 +730,61 @@ The response will include details such as the pickup number and the scheduled da
 If the pickup cannot be created (e.g., due to invalid contact information, lack of permissions, or other issues), the response will include details about the failure.
 
 
+## Delete Pickup
+
+**Endpoint:**
+```
+DELETE /pickups/{id}
+```
+Replace {id} with the actual ID of the pickup you want to delete.
+
+**Headers:**
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+**JavaScript Function to Delete a Pickup:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const endpoint = 'pickups'; // The endpoint for deleting pickups
+
+async function deletePickup(endpoint, id, accessToken) {
+    try {
+        const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            }
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+        console.log('Response Status:', response.status);
+    } catch (error) {
+        console.error('Fetching error:', error);
+    }
+}
+
+// Example usage:
+deletePickup(endpoint, 'PICKUP_ID', accessToken).then(() => console.log('API call completed.'));
+```
+**Response:**
+
+The response will indicate the status of the pickup deletion request.
+
+-**Successful Deletion:**
+The server will respond with a 204 No Content status, indicating that the pickup was successfully deleted.
+
+--**Failed Deletion:**
+If the pickup ID is not found, invalid or other failures, check ${response.status} and ${errorResponse.errors[0].message} for more details.
 
 
 
