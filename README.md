@@ -403,7 +403,63 @@ updateShipment();
   Check ${response.status} and ${errorResponse.errors[0].message}
 
 
+### Delete Shipment
+**Endpoint:**
 
-  
+```
+DELETE /shipments/{shipmentNumber}
+```
 
+**Headers:**
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authentication process.
+
+**URL Parameters:**
+shipmentNumber: The unique identifier of the shipment to be deleted.
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const shipmentNumber = '774012744635'; // Replace with the actual shipment number to be deleted
+
+async function deleteShipment() {
+  try {
+    const response = await fetch(`${BASE_URL}/shipments/${shipmentNumber}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+    }
+    console.log('Shipment deleted successfully');
+  } catch (error) {
+    console.error('Fetching error:', error);
+  }
+}
+
+deleteShipment();
+```
+
+**Response:**
+
+The response will confirm the success or failure of the deletion request.
+
+-**When Successful:**
+The request will complete without errors, and the response body will typically be empty.
+
+-**When Failed:**
+If the shipment cannot be deleted (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure in ${response.status} and ${errorResponse.errors[0].message}
 
