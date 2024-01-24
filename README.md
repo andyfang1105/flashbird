@@ -463,3 +463,89 @@ The request will complete without errors, and the response body will typically b
 -**When Failed:**
 If the shipment cannot be deleted (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure in ${response.status} and ${errorResponse.errors[0].message}
 
+
+## Get Tracking
+**Endpoint:**
+```
+GET /trackings/{shipmentNumber}
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+**URL Parameters:**
+shipmentNumber: The unique identifier of the shipment for which tracking information is being requested.
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const shipmentNumber = '774013244625'; // Replace with the actual shipment number to get tracking info
+
+async function getTracking() {
+    try {
+        const response = await fetch(`${BASE_URL}/trackings/${shipmentNumber}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            }
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+    } catch (error) {
+        console.error('Fetching error:', error);
+    }
+}
+
+getTracking();
+```
+
+**Response:**
+The response will provide detailed tracking information about the shipment.
+
+
+-**When Successful:**
+```json
+{
+  "number": "774013244625",
+  "isDelivered": 1,
+  "images": [
+    {
+      "type": "delivered",
+      "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/cd926d9b-635a-4977-93cb-ff5783264fc01705867432397-65a77d7532c2d0051d0a4ba6.jpeg"
+    },
+    {
+      "type": "signature",
+      "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/96f824b3-4eae-4e9d-8ed9-4951ac1db8011705867440867-65a77d7532c2d0051d0a4ba6.jpeg"
+    }
+  ],
+  "logs": [
+    { "message": "Shipment created", "time": 1704152668668 },
+    { "message": "Picked up by FlashBird", "time": 1704153477466 },
+    { "message": "Out for delivery", "time": 1705475445880 },
+    { "message": "Parcel delivered", "time": 1705867447106 }
+  ]
+}
+```
+
+-**When Failed:**
+If the tracking information cannot be retrieved (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
+
+
+
+
+
