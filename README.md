@@ -783,9 +783,86 @@ The response will indicate the status of the pickup deletion request.
 -**Successful Deletion:**
 The server will respond with a 204 No Content status, indicating that the pickup was successfully deleted.
 
---**Failed Deletion:**
+-**Failed Deletion:**
 If the pickup ID is not found, invalid or other failures, check ${response.status} and ${errorResponse.errors[0].message} for more details.
 
 
+## Get All Pickups
+
+**Endpoint:**
+```
+GET /pickups
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+**JavaScript Function to Get All Pickups:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const endpoint = 'pickups'; // The endpoint for retrieving all pickups
+
+async function getAllPickups(endpoint, accessToken) {
+    try {
+        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            }
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+    } catch (error) {
+        console.error('Fetching error:', error);
+    }
+}
+
+// Example usage:
+getAllPickups(endpoint, accessToken).then(() => console.log('API call completed.'));
+```
+
+**Response:**
+
+The response will include a list of all pickups available in your account.
+
+```json
+{
+  "pickups": [
+    {
+      "id": "pickup_id_1",
+      "status:: "open",
+      "contact": {
+        "name": "John Doe",
+        "company": "ABC Company",
+        "phone": "1234567890",
+        "email": "johndoe@example.com",
+        "street": "123 Main Street",
+        "city_or_town": "Toronto",
+        "province": "ON",
+        "country": "Canada",
+        "post_code": "M5V 2B7"
+      },
+      "created_at": 1704152668668
+    },
+    // More pickups...
+  ]
+}
+```
+The response will include details such as pickup ID, contact information, and created_at for each pickup.
 
 
