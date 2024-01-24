@@ -295,10 +295,109 @@ The response will provide details about the success or failure of the shipment c
 
 
 
+### Update Shipment
+**Endpoint:**
+
+```
+PUT /shipments/{shipmentNumber}
+```
+
+**Headers:**
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authentication process.
 
 
+**URL Parameters:**
+
+shipmentNumber: The unique tracking number of the shipment to be updated.
+
+**Body:**
+Provide the updated shipment details in the request body. The same fields as in the shipment creation are applicable, but only the fields that are being updated need to be included.
+
+```json
+{
+  "from": {
+    "name": "Alice Smith",
+    "phone": "(416) 555-0190",
+    "street": "123 Yonge Street",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5B 1N8",
+    "country": "Canada"
+  },
+  "to": {
+    "name": "Bob Brown",
+    "phone": "(416) 555-0132",
+    "street": "456 Queen Street West",
+    "city_or_town": "Toronto",
+    "province": "ON",
+    "post_code": "M5V 2B7",
+    "country": "Canada"
+  },
+  "packaging": [
+    {
+      "length": "10",
+      "width": "15",
+      "height": "20",
+      "weight": 5
+    }
+  ],
+  "refno": "1234567"
+}
+```
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const shipmentNumber = '774017844640'; // Replace with the actual shipment number to be updated
+
+const updatedShipmentData = {
+  // Include updated shipment data here
+};
+
+async function updateShipment() {
+  try {
+    const response = await fetch(`${BASE_URL}/shipments/${shipmentNumber}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(updatedShipmentData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log('Response Data:', responseData);
+  } catch (error) {
+    console.error('Fetching error:', error);
+  }
+}
+
+updateShipment();
+
+**Response:**
 
 
+- **When Successful (response.ok and rc is 0):**
+```json
+{
+  "rc": 0,
+  "number": "UPDATED_SHIPMENT_NUMBER",
+  "msg": "Shipment updated",
+}
+```
 
 
 
