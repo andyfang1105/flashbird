@@ -845,7 +845,7 @@ The response will include a list of all pickups available in your account.
   "pickups": [
     {
       "id": "pickup_id_1",
-      "status:: "open",
+      "status: "open",
       "contact": {
         "name": "John Doe",
         "company": "ABC Company",
