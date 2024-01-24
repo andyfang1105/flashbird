@@ -546,6 +546,90 @@ The response will provide detailed tracking information about the shipment.
 If the tracking information cannot be retrieved (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
 
 
+## Create Label
+
+**Endpoint:**
+```
+POST /labels
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+**Body:**
+Send an array of shipment numbers for which you need to create labels.
+
+```json
+{
+  "numbers": ["774013244625"]
+}
+```
+Replace the array elements with the actual shipment numbers.
+
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const endpoint = 'labels'; // The endpoint for creating labels
+const shipmentNumbers = ['774013244625']; // Replace with actual shipment numbers
+
+async function createLabels() {
+    try {
+        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({ numbers: shipmentNumbers }),
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+    } catch (error) {
+        console.error('Fetching error:', error);
+    }
+}
+
+createLabels();
+```
+
+**Response:**
+Upon successful creation, the response will include the labels for the specified shipments.
+
+-**When Successful:**
+The response will include the label data in base64 format.
+
+```json
+{
+  "labels": [
+    {
+      "number": "774013244625",
+      "label": "JVBERi0xLjMKJf////8KOSAwIG9iago8PAovVHlwZSAvRXh0..."
+    }
+  ]
+}
+```
+
+-**When Failed:**
+If the labels cannot be created (e.g., due to invalid shipment numbers, lack of permissions, or other issues), the response will include details about the failure.
+
+
+
+
 
 
 
