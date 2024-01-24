@@ -720,10 +720,9 @@ The response will include details such as the pickup number and the scheduled da
 
 ```json
 {
-  "pickupNumber": "PICKUP_NUMBER",
+  "id": "PICKUP_ID",
   "scheduledDate": "2024-01-25",
-  "message": "Pickup scheduled successfully",
-  "timestamp": 1704153662478
+  "msg": "Success",
 }
 ```
 
