@@ -11,6 +11,14 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 - [Making Authenticated Requests](#making-authenticated-requests)
 - [Endpoints](#endpoints)
   - [Create Shipment](#create-shipment)
+  - [Update Shipment](#update-shipment)
+  - [Delete Shipment](#delete-shipment)
+  - [Get Tracking](#get-tracking)
+  - [Create Label](#create-label)
+  - [Create Pickup](#create-pickup)
+  - [Delete Pickup](#delete-pickup)
+  - [Get All Pickups](#get-all-pickups)
+  - [Get Pickup](#get-pickup)
 
 
 
