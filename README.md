@@ -375,7 +375,8 @@ async function updateShipment() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorResponse = await response.json();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
     }
 
     const responseData = await response.json();
@@ -386,7 +387,7 @@ async function updateShipment() {
 }
 
 updateShipment();
-
+```
 **Response:**
 
 
@@ -398,6 +399,11 @@ updateShipment();
   "msg": "Shipment updated",
 }
 ```
+- **When Failed (response.ok is not true):**
+  Check ${response.status} and ${errorResponse.errors[0].message}
 
+
+
+  
 
 
