@@ -11,7 +11,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 - [Making Authenticated Requests](#making-authenticated-requests)
 - [Endpoints](#endpoints)
   - [Create a Shipment](#create-a-shipment)
-  - [Update Shipment](#update-shipment)
+  - [Update a Shipment](#update-a-shipment)
   - [Delete Shipment](#delete-shipment)
   - [Get Tracking](#get-tracking)
   - [Create Label](#create-label)
@@ -143,6 +143,7 @@ Endpoints
 List the available endpoints, their methods, expected input, and output. For example:
 
 ## Create a Shipment
+This endpoint is used to create a new shipment. It requires details about the sender and receiver, along with specific information about the package.
 **Endpoint:**
 
 ```
@@ -301,7 +302,7 @@ The response will provide details about the success or failure of the shipment c
 
 
 
-## Update Shipment
+## Update a Shipment
 **Endpoint:**
 
 ```
@@ -321,10 +322,10 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 
 **URL Parameters:**
 
-shipmentNumber: The unique tracking number of the shipment to be updated.
+`shipmentNumber`: The unique tracking number of the shipment to be updated.
 
 **Body:**
-Provide the updated shipment details in the request body. The same fields as in the shipment creation are applicable, but only the fields that are being updated need to be included.
+Provide the updated shipment details in the request body. The same fields as in the shipment creation are applicable.
 
 ```json
 {
@@ -348,13 +349,15 @@ Provide the updated shipment details in the request body. The same fields as in 
   },
   "packaging": [
     {
-      "length": "10",
-      "width": "15",
-      "height": "20",
+      "length": 10,
+      "width": 15,
+      "height": 20,
       "weight": 5
     }
   ],
-  "refno": "1234567"
+  "refno": "1234567",
+  "notes": "Notes for delivery instructions",
+  "items": "Description of the items",
 }
 ```
 
@@ -397,7 +400,7 @@ updateShipment();
 **Response:**
 
 
-- **When Successful (response.ok and rc is 0):**
+- **When Successful (http status 200 and rc is 0):**
 ```json
 {
   "rc": 0,
@@ -405,9 +408,10 @@ updateShipment();
   "msg": "Shipment updated",
 }
 ```
-- **When Failed (response.ok is not true):**
-  Check ${response.status} and ${errorResponse.errors[0].message}
-
+- **When Failed:**
+```
+Fetching error: Error: HTTP error! status: 404, message: Shipment not found
+```
 
 ## Delete Shipment
 **Endpoint:**
