@@ -449,6 +449,7 @@ DELETE /shipments/{shipmentNumber}
 Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authentication process.
 
 **URL Parameters:**
+
 `shipmentNumber`: The unique identifier of the shipment to be deleted.
 
 **Important Conditions:**
@@ -492,6 +493,7 @@ deleteShipment();
 The response will confirm the success or failure of the deletion request.
 
 -**When Successful:(http status 204)**
+
 The request will complete without errors, and the response body will typically be empty.
 
 -**When Failed:**
@@ -515,7 +517,8 @@ GET /trackings/{shipmentNumber}
 Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
 
 **URL Parameters:**
-shipmentNumber: The unique identifier of the shipment for which tracking information is being requested.
+
+`shipmentNumber`: The unique identifier of the shipment for which tracking information is being requested.
 
 **Sample JavaScript Request:**
 ```javascript
