@@ -331,6 +331,12 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 
 `shipmentNumber`: The unique tracking number of the shipment to be updated.
 
+**Important Conditions:**
+
+- Updates are only permissible for shipments in "draft" status.
+- Shipments that have been picked up, delivered, or deleted cannot be updated.
+- Attempting to update a shipment that is not eligible (not in "draft" status) will result in an error response stating "Shipment not found".
+
 **Body:**
 Provide the updated shipment details in the request body. The same fields as in the shipment creation are applicable.
 
