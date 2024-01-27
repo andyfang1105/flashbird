@@ -233,13 +233,15 @@ const shipmentData = {
   },
   "packaging": [
     {
-      "length": "10",
-      "width": "15",
-      "height": "20",
+      "length": 10,
+      "width": 15,
+      "height": 20,
       "weight": 5
     }
   ],
   "refno": "1234567"
+  "notes": "Notes for delivery instructions",
+  "items": "Description of the items",
 };
 
 async function createShipment() {
