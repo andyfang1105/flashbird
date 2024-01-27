@@ -28,8 +28,8 @@ All URLs referenced in the documentation have the following base:
 
 http://localhost:3001/api/2024-01/merchant
 
+Please send an email to andyfang@flashbird.ca to request to enable Flashbird API for your account. After Flashbird API is enabled, log in Flashbird website, navigate to API Authtoken, replace above base URL with the actual one.
 
-The base URL will change depending on the environment (development, staging, production).
 
 ## Authentication
 
