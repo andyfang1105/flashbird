@@ -10,7 +10,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Obtain New Access Token via Refresh Token](#obtain-new-access-token-via-refresh-token)
 - [Making Authenticated Requests](#making-authenticated-requests)
 - [Endpoints](#endpoints)
-  - [Create Shipment](#create-shipment)
+  - [Create a Shipment](#create-a-shipment)
   - [Update Shipment](#update-shipment)
   - [Delete Shipment](#delete-shipment)
   - [Get Tracking](#get-tracking)
@@ -289,13 +289,13 @@ The response will provide details about the success or failure of the shipment c
 
   Duplicate Reference Number Example:
 
-  ```json
+  ```
   Fetching error: Error: HTTP error! status: 400, message: Failed to create the shipment due to duplicate Ref No. (1234567) found in shipment 774015246477
   ```
 
   Out of Service Area Example:
 
-  ```json
+  ```
   Fetching error: Error: HTTP error! status: 400, message: FSA/Postal Code A8S is out of service are
   ```
 
