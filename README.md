@@ -12,7 +12,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 - [Endpoints](#endpoints)
   - [Create a Shipment](#create-a-shipment)
   - [Update a Shipment](#update-a-shipment)
-  - [Delete Shipment](#delete-shipment)
+  - [Delete a Shipment](#delete-a-shipment)
   - [Get Tracking](#get-tracking)
   - [Create Label](#create-label)
   - [Create Pickup](#create-pickup)
@@ -428,7 +428,10 @@ updateShipment();
 Fetching error: Error: HTTP error! status: 404, message: Shipment not found
 ```
 
-## Delete Shipment
+## Delete a Shipment
+
+This endpoint allows for the deletion of an existing shipment by using its unique tracking number.
+
 **Endpoint:**
 
 ```
@@ -446,7 +449,13 @@ DELETE /shipments/{shipmentNumber}
 Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authentication process.
 
 **URL Parameters:**
-shipmentNumber: The unique identifier of the shipment to be deleted.
+`shipmentNumber`: The unique identifier of the shipment to be deleted.
+
+**Important Conditions:**
+
+- Deletion is only permissible for shipments in "draft" status.
+- Shipments that have been picked up, delivered, or previously deleted cannot be deleted.
+- Attempting to delete a shipment that is not eligible (not in "draft" status) will result in an error response stating "Shipment not found".
 
 **Sample JavaScript Request:**
 ```javascript
@@ -482,12 +491,13 @@ deleteShipment();
 
 The response will confirm the success or failure of the deletion request.
 
--**When Successful:**
+-**When Successful:(http status 204)**
 The request will complete without errors, and the response body will typically be empty.
 
 -**When Failed:**
-If the shipment cannot be deleted (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure in ${response.status} and ${errorResponse.errors[0].message}
-
+```
+Fetching error: Error: HTTP error! status: 404, message: Shipment not found
+```
 
 ## Get Tracking
 **Endpoint:**
