@@ -338,6 +338,7 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 - Attempting to update a shipment that is not eligible (not in "draft" status) will result in an error response stating "Shipment not found".
 
 **Body:**
+
 Provide the updated shipment details in the request body. The same fields as in the shipment creation are applicable.
 
 ```json
