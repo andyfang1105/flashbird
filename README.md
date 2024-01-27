@@ -143,7 +143,9 @@ Endpoints
 List the available endpoints, their methods, expected input, and output. For example:
 
 ## Create a Shipment
+
 This endpoint is used to create a new shipment. It requires details about the sender and receiver, along with specific information about the package.
+
 **Endpoint:**
 
 ```
