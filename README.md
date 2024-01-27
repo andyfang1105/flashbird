@@ -256,7 +256,8 @@ async function createShipment() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorResponse = await response.json();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
     }
 
     const responseData = await response.json();
@@ -273,7 +274,7 @@ createShipment();
 
 The response will provide details about the success or failure of the shipment creation.
 
-- **When Successful (rc is 0):**
+- **When Successful (http status 200 and rc is 0):**
   ```json
   {
     "rc": 0,
@@ -284,31 +285,18 @@ The response will provide details about the success or failure of the shipment c
   }
   
   ```
-- **When Failed (rc is -1):**
+- **When Failed:**
 
   Duplicate Reference Number Example:
 
   ```json
-  {
-    "rc": -1,
-    "refno": "YOUR_REFERENCE_NUMBER",
-    "number": "",
-    "message": "Failed to create the shipment due to duplicate Ref No. (YOUR_REFERENCE_NUMBER) found in shipment UNIQUE_SHIPMENT_NUMBER",
-    "timestamp": 1704152662478
-  }
-  
+  Fetching error: Error: HTTP error! status: 400, message: Failed to create the shipment due to duplicate Ref No. (1234567) found in shipment 774015246477
   ```
 
   Out of Service Area Example:
 
   ```json
-  {
-    "rc": -1,
-    "refno": "YOUR_REFERENCE_NUMBER",
-    "number": "",
-    "message": "FSA/Postal Code A8S is out of service area",
-    "timestamp": 1704152679730
-  }
+  Fetching error: Error: HTTP error! status: 400, message: FSA/Postal Code A8S is out of service are
   ```
 
 
