@@ -142,7 +142,7 @@ headers: {
 Endpoints
 List the available endpoints, their methods, expected input, and output. For example:
 
-## Create Shipment
+## Create a Shipment
 **Endpoint:**
 
 ```
@@ -162,7 +162,13 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 
 **Body:**
 
-Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections. The `packaging` is an array where each item must include at least the weight.
+Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections. The `packaging` is an array where each item must include at least the weight. 
+
+In the `packaging` array:
+
+`length`, `width`, `height` should be specified in centimeters (cm).
+
+`weight` should be specified in kilograms (kg).
 
 ```json
 {
@@ -186,13 +192,15 @@ Provide the shipment details in the request body. The following fields are requi
   },
   "packaging": [
     {
-      "length": "10",
-      "width": "15",
-      "height": "20",
+      "length": 10,
+      "width": 15,
+      "height": 20,
       "weight": 5
     }
   ],
   "refno": "1234567"
+  "notes": "Notes for delivery instructions",
+  "items": "Description of the items",
 }
 ```
 
