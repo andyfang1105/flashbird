@@ -230,6 +230,7 @@ const shipmentData = {
     "name": "Bob Brown",
     "phone": "(416) 555-0132",
     "street": "456 Queen Street West",
+    "unit_no": "210",
     "city_or_town": "Toronto",
     "province": "ON",
     "post_code": "M5V 2B7",
@@ -306,6 +307,9 @@ The response will provide details about the success or failure of the shipment c
 
 
 ## Update a Shipment
+
+This endpoint allows you to update the details of an existing shipment using its unique tracking number.
+
 **Endpoint:**
 
 ```
