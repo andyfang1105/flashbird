@@ -593,8 +593,6 @@ The response will provide detailed tracking information about the shipment.
 - `time`: The timestamp of when the event occurred.
 - `dateOfBirth`: An optional field that indicates the date of birth associated with the shipment. Format: **mm/dd/yyyy**.
 
-
-
 -**When Failed:**
 If the tracking information cannot be retrieved (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
 
