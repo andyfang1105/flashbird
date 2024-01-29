@@ -18,8 +18,6 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Create a Pickup](#create-a-pickup)
   - [Delete a Pickup](#delete-a-pickup)
   - [Get All Pickups](#get-all-pickups)
-  - [Get Pickup](#get-pickup)
-
 
 
 ## Base URL
@@ -913,7 +911,7 @@ getAllPickups(endpoint, accessToken).then(() => console.log('API call completed.
 
 The response will include a list of all pickups available in your account.
 
-```json
+```
 {
   "pickups": [
     {
@@ -937,85 +935,4 @@ The response will include a list of all pickups available in your account.
 }
 ```
 The response will include details such as pickup ID, contact information, and created_at for each pickup.
-
-## Get Pickup
-
-**Endpoint:**
-```
-GET /pickups/{pickup_id}
-```
-Replace {pickup_id} with the actual ID of the pickup you want to retrieve.
-
-**Headers:**
-```json
-{
-  "Content-Type": "application/json",
-  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
-}
-```
-
-Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
-
-**JavaScript Function to Get a Pickup:**
-```javascript
-const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
-const endpoint = 'pickups'; // The endpoint for retrieving a specific pickup
-const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
-
-async function getPickup(endpoint, id, accessToken) {
-    try {
-        const response = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-            }
-        });
-
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
-        }
-
-        const responseData = await response.json();
-        console.log('Response Data:', responseData);
-    } catch (error) {
-        console.error('Fetching error:', error);
-    }
-}
-
-// Example usage:
-// For existing pickup
-getPickup(endpoint, '65a9efa6cb6eaae46ae6d1d9', accessToken).then(() => console.log('API call completed.'));
-
-// For non-existing pickup
-getPickup(endpoint, '65a9efa6cb6eaae46ae6d1d7', accessToken).then(() => console.log('API call completed.'));
-```
-
-**Response:**
--**When Successful:**
-```json
-{
-  "status": "open",
-  "contact": {
-    "name": "Andy",
-    "company": "ABC Company",
-    "phone": "1234567890",
-    "email": "andy@example.com",
-    "street": "123 Main Street",
-    "city_or_town": "Etobicoke",
-    "province": "ON",
-    "country": "Canada",
-    "post_code": "M4S2T8"
-  },
-  "created_at": 1705635749992,
-  "id": "65a9efa6cb6eaae46ae6d1d9"
-}
-```
--**When Failed**
-Check ${response.status} and ${errorResponse.errors[0].message} for more details
-
-
-
 
