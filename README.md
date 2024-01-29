@@ -525,7 +525,7 @@ Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authent
 const fetch = require('node-fetch');
 const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
-const shipmentNumber = '774013244625'; // Replace with the actual shipment number to get tracking info
+const shipmentNumber = '774016144642'; // Replace with the actual shipment number to get tracking info
 
 async function getTracking() {
     try {
@@ -556,29 +556,44 @@ getTracking();
 The response will provide detailed tracking information about the shipment.
 
 
--**When Successful:**
-```json
+- **When Successful:**
+```
 {
-  "number": "774013244625",
-  "isDelivered": 1,
-  "images": [
+  number: '774016144642',
+  isDelivered: 1,
+  images: [
     {
-      "type": "delivered",
-      "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/cd926d9b-635a-4977-93cb-ff5783264fc01705867432397-65a77d7532c2d0051d0a4ba6.jpeg"
+      type: 'delivered',
+      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/7e2e1865-51b0-4c06-a6bd-ad2c2f4e3c501706501069430-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=AKIAWCK7U6RSCK6STQI3&Expires=1706502317&Signature=aPGZ2hO507dFlUGsDsq9Mzv7rA8%3D'
     },
     {
-      "type": "signature",
-      "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/96f824b3-4eae-4e9d-8ed9-4951ac1db8011705867440867-65a77d7532c2d0051d0a4ba6.jpeg"
+      type: 'signature',
+      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/6325effd-30ea-42de-8981-7de1ebed41e91706501086923-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=AKIAWCK7U6RSCK6STQI3&Expires=1706502317&Signature=HjtUQWxLimLCZ9eikjjWVGPuSmg%3D'
     }
   ],
-  "logs": [
-    { "message": "Shipment created", "time": 1704152668668 },
-    { "message": "Picked up by FlashBird", "time": 1704153477466 },
-    { "message": "Out for delivery", "time": 1705475445880 },
-    { "message": "Parcel delivered", "time": 1705867447106 }
-  ]
+  logs: [
+    { message: 'Shipment created', time: 1706501003768 },
+    { message: 'Picked up by FlashBird', time: 1706501042411 },
+    { message: 'Out for delivery', time: 1706501050859 },
+    { message: 'Parcel delivered', time: 1706501093372 }
+  ],
+  dateOfBirth: '1/31/2000'
 }
 ```
+
+**Fields Description:**
+
+- `number`: The unique tracking number of the shipment.
+- `isDelivered`: Indicates the delivery status of the shipment. 1 for delivered, 0 for not delivered.
+- `images`: An array of image objects related to the shipment. Each object may contain:
+- `type`: The type of image, such as 'delivered' or 'signature'.
+- `url`: A temporary URL for the image. It's recommended to save the image to your server if needed, as these URLs are temporary.
+- `logs`: An array detailing the tracking history of the shipment. Each log entry contains:
+- `message`: A text description of the tracking event.
+- `time`: The timestamp of when the event occurred.
+- `dateOfBirth`: An optional field that indicates the date of birth associated with the shipment. Format: **mm/dd/yyyy**.
+
+
 
 -**When Failed:**
 If the tracking information cannot be retrieved (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
