@@ -16,7 +16,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Get Tracking](#get-tracking)
   - [Create a Shipment Label](#create-a-shipment-label)
   - [Create a Pickup](#create-a-pickup)
-  - [Delete Pickup](#delete-pickup)
+  - [Delete a Pickup](#delete-a-pickup)
   - [Get All Pickups](#get-all-pickups)
   - [Get Pickup](#get-pickup)
 
