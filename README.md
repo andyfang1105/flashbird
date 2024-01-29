@@ -909,6 +909,7 @@ getAllPickups(endpoint, accessToken).then(() => console.log('API call completed.
 
 **Response:**
 
+- **When Successful:**
 The response will include a list of all pickups available in your account.
 
 ```
@@ -936,3 +937,5 @@ The response will include a list of all pickups available in your account.
 ```
 The response will include details such as pickup ID, contact information, and created_at for each pickup.
 
+- **When Failed:**
+If cannot get all pickups (e.g., due to invalid contact information, lack of permissions, or other issues), the response will include details about the failure.
