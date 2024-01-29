@@ -14,7 +14,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Update a Shipment](#update-a-shipment)
   - [Delete a Shipment](#delete-a-shipment)
   - [Get Tracking](#get-tracking)
-  - [Create a Shipment Label](#create-a-shipment-label)
+  - [Create Shipment Labels](#create-shipment-labels)
   - [Create a Pickup](#create-a-pickup)
   - [Delete a Pickup](#delete-a-pickup)
   - [Get All Pickups](#get-all-pickups)
@@ -598,9 +598,9 @@ The response will provide detailed tracking information about the shipment.
 If the tracking information cannot be retrieved (e.g., shipment not found, due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
 
 
-## Create a Shipment Label
+## Create Shipment Labels
 
-The "Create a Shipment Label" endpoint is used for generating shipping labels for one or more shipments. You need to provide an array of shipment numbers, and the API will return the corresponding label data.
+This endpoint is used for generating shipping labels for one or more shipments. You need to provide an array of shipment numbers, and the API will return the corresponding label data.
 
 **Endpoint:**
 ```
