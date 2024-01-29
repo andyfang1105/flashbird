@@ -781,7 +781,7 @@ Upon successful creation, the response will confirm the pickup request and provi
 - **When Successful:**
 The response will include details such as the pickup number and the scheduled date and time.
 
-```json
+```
 {
   rc: 0,
   msg: 'Success',
@@ -858,6 +858,9 @@ If the pickup ID is not found, invalid or other failures, check ${response.statu
 
 
 ## Get All Pickups
+
+- This endpoint provides a list of all the pickups scheduled under your account.
+- It's useful for tracking and managing multiple pickups, allowing you to get an overview of all scheduled, ongoing, or past pickup activities.
 
 **Endpoint:**
 ```
