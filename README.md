@@ -778,22 +778,29 @@ createPickup();
 **Response:**
 Upon successful creation, the response will confirm the pickup request and provide details about the scheduled pickup.
 
--**When Successful:**
+- **When Successful:**
 The response will include details such as the pickup number and the scheduled date and time.
 
 ```json
 {
-  "id": "PICKUP_ID",
-  "scheduledDate": "2024-01-25",
-  "msg": "Success",
+  rc: 0,
+  msg: 'Success',
+  id: '65b72c1c321e896990b17d22'
 }
 ```
 
--**When Failed:**
+- `rc`: This field indicates the result code. A value of 0 signifies a successful operation.
+- `msg`: A short message, typically indicating the status of the request. In successful cases, it usually displays 'Success'.
+- `id`: This is a unique identifier for the scheduled pickup. It serves as a reference to the specific pickup request and can be used for tracking or managing the pickup later.
+
+
+- **When Failed:**
 If the pickup cannot be created (e.g., due to invalid contact information, lack of permissions, or other issues), the response will include details about the failure.
 
 
-## Delete Pickup
+## Delete a Pickup
+
+This endpoint allows you to delete a previously scheduled pickup using its unique ID.
 
 **Endpoint:**
 ```
@@ -843,10 +850,10 @@ deletePickup(endpoint, 'PICKUP_ID', accessToken).then(() => console.log('API cal
 
 The response will indicate the status of the pickup deletion request.
 
--**Successful Deletion:**
+- **Successful Deletion:**
 The server will respond with a 204 No Content status, indicating that the pickup was successfully deleted.
 
--**Failed Deletion:**
+- **Failed Deletion:**
 If the pickup ID is not found, invalid or other failures, check ${response.status} and ${errorResponse.errors[0].message} for more details.
 
 
