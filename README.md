@@ -14,7 +14,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Update a Shipment](#update-a-shipment)
   - [Delete a Shipment](#delete-a-shipment)
   - [Get Tracking](#get-tracking)
-  - [Create Label](#create-label)
+  - [Create a Shipment Label](#create-a-shipment-label)
   - [Create Pickup](#create-pickup)
   - [Delete Pickup](#delete-pickup)
   - [Get All Pickups](#get-all-pickups)
@@ -502,6 +502,9 @@ Fetching error: Error: HTTP error! status: 404, message: Shipment not found
 ```
 
 ## Get Tracking
+
+This endpoint retrieves detailed tracking information for a specific shipment. By providing the unique tracking number, you can obtain the current status, delivery information, and the complete log of tracking events associated with the shipment.
+
 **Endpoint:**
 ```
 GET /trackings/{shipmentNumber}
@@ -593,11 +596,13 @@ The response will provide detailed tracking information about the shipment.
 - `time`: The timestamp of when the event occurred.
 - `dateOfBirth`: An optional field that indicates the date of birth associated with the shipment. Format: **mm/dd/yyyy**.
 
--**When Failed:**
-If the tracking information cannot be retrieved (e.g., due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
+- **When Failed:**
+If the tracking information cannot be retrieved (e.g., shipment not found, due to invalid shipment number, lack of permissions, or other issues), the response will include details about the failure.
 
 
-## Create Label
+## Create a Shipment Label
+
+The "Create a Shipment Label" endpoint is used for generating shipping labels for one or more shipments. You need to provide an array of shipment numbers, and the API will return the corresponding label data.
 
 **Endpoint:**
 ```
@@ -630,7 +635,7 @@ const fetch = require('node-fetch');
 const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const endpoint = 'labels'; // The endpoint for creating labels
-const shipmentNumbers = ['774013244625']; // Replace with actual shipment numbers
+const shipmentNumbers = ['774017944644', '774017044643']; // Replace with actual shipment numbers
 
 async function createLabels() {
     try {
@@ -661,23 +666,15 @@ createLabels();
 **Response:**
 Upon successful creation, the response will include the labels for the specified shipments.
 
--**When Successful:**
+- **When Successful:**
 The response will include the label data in base64 format.
 
-```json
-{
-  "labels": [
-    {
-      "number": "774013244625",
-      "label": "JVBERi0xLjMKJf////8KOSAwIG9iago8PAovVHlwZSAvRXh0..."
-    }
-  ]
-}
+```
+JVBERi0xLjMKJf////8KMTAgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovY2EgMQovQ0EgMQo+PgplbmRvYmoKMTMgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovQ0EgMQo+PgplbmRvYmoKMTQgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovY2EgMQo+PgplbmRvYmoKOSAwIG9iago8PAovVHlwZSAvUGFnZQovUGFyZW50IDEgMCBSCi9NZWRpYUJveCBbMCAwIDI4OCA0MzJdCi9Db250ZW50cyA3IDAgUgovUmVzb3VyY2VzIDggMCBSCj4+CmVuZG9iago4IDAgb2JqCjw8Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQovRXh0R1N0YXRlIDw8Ci9HczEgMTAgMCBSCi9HczIgMTMgMCBSCi9HczMgMTQgMCBSCj4+Ci9Gb250IDw8Ci9GMSAxMSAwIFIKL0YyIDEyIDAgUgo+PgovWE9iamVjdCA8PAovSTEgNSAwIFIKPj4KPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0xlb....
 ```
 
--**When Failed:**
+- **When Failed:**
 If the labels cannot be created (e.g., due to invalid shipment numbers, lack of permissions, or other issues), the response will include details about the failure.
-
 
 
 ## Create Pickup
