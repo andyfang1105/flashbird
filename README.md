@@ -15,7 +15,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Delete a Shipment](#delete-a-shipment)
   - [Get Tracking](#get-tracking)
   - [Create a Shipment Label](#create-a-shipment-label)
-  - [Create Pickup](#create-pickup)
+  - [Create a Pickup](#create-a-pickup)
   - [Delete Pickup](#delete-pickup)
   - [Get All Pickups](#get-all-pickups)
   - [Get Pickup](#get-pickup)
@@ -677,7 +677,9 @@ JVBERi0xLjMKJf////8KMTAgMCBvYmoKPDwKL1R5cGUgL0V4dEdTdGF0ZQovY2EgMQovQ0EgMQo+Pgpl
 If the labels cannot be created (e.g., due to invalid shipment numbers, lack of permissions, or other issues), the response will include details about the failure.
 
 
-## Create Pickup
+## Create a Pickup
+
+This endpoint is used to schedule a pickup for one or more shipments. You need to provide the contact details of the person or company from where the shipment will be picked up. This includes name, company, phone number, email, address, and postal code.
 
 **Endpoint:**
 ```
@@ -705,6 +707,7 @@ Include the details of the contact for pickup in the request body.
     "phone": "1234567890",
     "email": "johndoe@example.com",
     "street": "123 Main Street",
+    "unit_no": "24",
     "city_or_town": "Toronto",
     "province": "ON",
     "country": "Canada",
@@ -713,6 +716,18 @@ Include the details of the contact for pickup in the request body.
 }
 ```
 Replace the details with the actual information for the contact.
+
+The `contact` object in the request body must include essential contact information for the pickup process. Ensure you provide accurate details for the following required fields:
+
+- `phone`: The contact's phone number.
+- `email`: The contact's email address.
+- `street`: The street address for pickup.
+- `city_or_town`: The city or town of the pickup location.
+- `province`: The province or state of the pickup location.
+- `country`: The country of the pickup location.
+- `post_code`: The postal or zip code of the pickup location.
+  
+Optional fields such as `name`, `company`, and `unit_no` can also be included for more specific information. Ensure all provided information is up-to-date and accurate to facilitate a smooth pickup process.
 
 **Sample JavaScript Request:**
 ```javascript
