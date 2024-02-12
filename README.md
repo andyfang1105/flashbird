@@ -18,6 +18,7 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Create a Pickup](#create-a-pickup)
   - [Delete a Pickup](#delete-a-pickup)
   - [Get All Pickups](#get-all-pickups)
+  - [Get Rates](#get-rates)
 
 
 ## Base URL
@@ -939,3 +940,109 @@ The response will include details such as pickup ID, contact information, and cr
 
 - **When Failed:**
 If cannot get all pickups (e.g., due to invalid contact information, lack of permissions, or other issues), the response will include details about the failure.
+
+## Get Rates
+
+This section outlines the steps to calculate the total charge amount for a shipment. Utilizing the Flashbird API, you can estimate shipping costs by providing package details, including weight and dimensions, along with the origin and destination information.
+
+**Endpoint:**
+```
+POST /rates
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+```
+Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
+
+**Request Body:**
+To calculate the shipping rate, you need to send a JSON object in the request body with details about the package, including its weight, dimensions, and the postal codes of the sender and recipient.
+```json
+{
+  "from": {
+    "post_code": "M5B 1N8"
+  },
+  "to": {
+    "post_code": "L4S 3B4"
+  },
+  "weight": 5,
+  "dimensions": {
+    "length": 1,
+    "width": 1,
+    "height": 1
+  }
+}
+```
+
+The `weight` is in kilograms, and the `dimensions` are in centimeters (cm).
+
+**Sample JavaScript Request:**
+```javascript
+const fetch = require('node-fetch');
+const config = require('./config');
+
+const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
+const endpoint = 'rates'; // Endpoint for rate calculation
+
+async function getRates(packageInfo) {
+    try {
+        const response = await fetch(`${baseURL}${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(packageInfo),
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorResponse.errors[0].message}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Estimated Shipping Rate:', responseData);
+    } catch (error) {
+        console.error('Error calculating rates:', error);
+    }
+}
+
+// Example package information
+const packageInfo = {
+    "from": {
+        "post_code": "M5B 1N8"
+    },
+    "to": {
+        "post_code": "L4S 3B4"
+    },
+    "weight": 5,
+    "dimensions": {
+        "length": 1,
+        "width": 1,
+        "height": 1
+    }
+};
+
+// Calculate the rate
+getRates(packageInfo);
+```
+
+**Response:**
+Upon successful calculation, the API will return a response containing the estimated shipping rate for the provided package information.
+```json
+{
+  "price": 10
+}
+```
+The `price` is the estimated shipping cost based on the provided package details and current rate calculations.
+
+This feature enables you to dynamically calculate shipping rates directly from your application, ensuring that you and your customers have access to up-to-date pricing information for informed decision-making.
+
+
+
+
