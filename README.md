@@ -201,7 +201,7 @@ In the `packaging` array:
       "weight": 5
     }
   ],
-  "refno": "1234567"
+  "refno": "1234567",
   "notes": "Notes for delivery instructions",
   "items": "Description of the items",
 }
