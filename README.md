@@ -943,7 +943,7 @@ If cannot get all pickups (e.g., due to invalid contact information, lack of per
 
 ## Get Rates
 
-This section outlines the steps to calculate the total charge amount for a shipment. Utilizing the Flashbird API, you can estimate shipping costs by providing package details, including weight and dimensions, along with the origin and destination information.
+Calculate the total charge amount for a shipment by providing package details, including weight, dimensions, and origin and destination postal codes.
 
 **Endpoint:**
 ```
@@ -960,7 +960,12 @@ POST /rates
 Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authentication process.
 
 **Request Body:**
-To calculate the shipping rate, you need to send a JSON object in the request body with details about the package, including its weight, dimensions, and the postal codes of the sender and recipient.
+
+The request body must include the sender's and recipient's postal codes and the package's weight and dimensions.
+
+`from.post_code` and `to.post_code` are mandatory.
+`packaging` should be an array, each element an object including `length`, `width`, `height` (in cm), and `weight` (in kg).
+
 ```json
 {
   "from": {
@@ -969,29 +974,38 @@ To calculate the shipping rate, you need to send a JSON object in the request bo
   "to": {
     "post_code": "L4S 3B4"
   },
-  "weight": 5,
-  "dimensions": {
-    "length": 1,
-    "width": 1,
-    "height": 1
-  }
+  "packaging": [
+    {
+      "length": 20,
+      "width": 25,
+      "height": 20,
+      "weight": 30
+    },
+    {
+      "length": 10,
+      "width": 15,
+      "height": 10,
+      "weight": 20
+    }
+  ]
 }
 ```
 
-The `weight` is in kilograms, and the `dimensions` are in centimeters (cm).
+**Sample JavaScript Function:**
 
-**Sample JavaScript Request:**
+Calculate shipping rates by making a POST request to the /rates endpoint with package information.
+
 ```javascript
 const fetch = require('node-fetch');
 const config = require('./config');
 
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
-const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
-const endpoint = 'rates'; // Endpoint for rate calculation
+const baseURL = config.baseURL;
+const endpoint = 'rates';
+const accessToken = config.access_token;
 
 async function getRates(packageInfo) {
     try {
-        const response = await fetch(`${baseURL}${endpoint}`, {
+        const response = await fetch(`${baseURL}/${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1013,35 +1027,41 @@ async function getRates(packageInfo) {
 }
 
 // Example package information
-const packageInfo = {
+getRates({
     "from": {
         "post_code": "M5B 1N8"
     },
     "to": {
         "post_code": "L4S 3B4"
     },
-    "weight": 5,
-    "dimensions": {
-        "length": 1,
-        "width": 1,
-        "height": 1
-    }
-};
+    "packaging": [
+      {
+        "length": 20,
+        "width": 25,
+        "height": 20,
+        "weight": 30
+      },
+      {
+        "length": 10,
+        "width": 15,
+        "height": 10,
+        "weight": 20
+      }
+    ]
+}, accessToken).then(() => console.log('API call completed.'));
 
-// Calculate the rate
-getRates(packageInfo);
 ```
 
 **Response:**
-Upon successful calculation, the API will return a response containing the estimated shipping rate for the provided package information.
-```json
-{
-  "price": 10
-}
-```
-The `price` is the estimated shipping cost based on the provided package details and current rate calculations.
 
-This feature enables you to dynamically calculate shipping rates directly from your application, ensuring that you and your customers have access to up-to-date pricing information for informed decision-making.
+On successful calculation, the API returns the estimated shipping rate.
+
+```json
+{ "price": 19.5 }
+```
+
+The `price` is the estimated shipping cost based on the provided package details and current rate calculations, offering dynamic rate calculation directly from your application.
+
 
 
 
