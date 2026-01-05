@@ -284,8 +284,13 @@ The response will provide details about the success or failure of the shipment c
     "rc": 0,
     "number": "UNIQUE_SHIPMENT_NUMBER",
     "refno": "YOUR_REFERENCE_NUMBER",
+    // 0 = same day
+    // 1 = next day
+    // 2 = 2 days
+    // 3 = more than 2 days
+    "transit_time": 0, 
     "message": "Successfully created a shipment",
-    "timestamp": 1704152543232
+    "timestamp": 1704152543232,
   }
   
   ```
@@ -420,6 +425,11 @@ updateShipment();
   "rc": 0,
   "number": "UPDATED_SHIPMENT_NUMBER",
   "msg": "Shipment updated",
+  // 0 = same day
+  // 1 = next day
+  // 2 = 2 days
+  // 3 = more than 2 days
+  "transit_time": 0
 }
 ```
 - **When Failed:**
