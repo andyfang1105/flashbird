@@ -164,7 +164,7 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 
 **Body:**
 
-Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections. The `packaging` is an array where each item must include at least the weight. 
+Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections, `email` and `phone` are optional. The `packaging` is an array where each item must include at least the weight. 
 
 In the `packaging` array:
 
