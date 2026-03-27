@@ -164,7 +164,9 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 
 **Body:**
 
-Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections, `email` and `phone` are optional. The `packaging` is an array where each item must include at least the weight. 
+Provide the shipment details in the request body. The following fields are required: `name`, `phone`, `street`, `city_or_town`, `province`, `post_code`, `country` in both from and to sections, `email` and `phone` are optional. The `packaging` is an array where each item must include at least the weight.
+
+**Maximum Parcels Per Shipment:** Each merchant account has a configurable maximum number of parcels (packaging entries) per shipment. The default limit is **3**. If the `packaging` array exceeds this limit, the API will return a `400` error. Contact FlashBird to adjust this limit for your account.
 
 In the `packaging` array:
 
@@ -308,6 +310,12 @@ The response will provide details about the success or failure of the shipment c
   Fetching error: Error: HTTP error! status: 400, message: FSA/Postal Code A8S is out of service are
   ```
 
+  Exceeded Max Parcels Example:
+
+  ```
+  Fetching error: Error: HTTP error! status: 400, message: Exceeded maximum number of parcels per shipment (3)
+  ```
+
 
 
 ## Update a Shipment
@@ -340,6 +348,7 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 - Updates are only permissible for shipments in "draft" status.
 - Shipments that have been picked up, delivered, or deleted cannot be updated.
 - Attempting to update a shipment that is not eligible (not in "draft" status) will result in an error response stating "Shipment not found".
+- The `packaging` array must not exceed the merchant's maximum parcels per shipment limit (default: 3). Exceeding this limit will result in a `400` error.
 
 **Body:**
 
