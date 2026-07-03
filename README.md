@@ -30,11 +30,13 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
 
 ## Base URL
 
-All URLs referenced in the documentation have the following base:
+All examples in this documentation run against the **sandbox environment** and work as-is with sandbox credentials (see [Sandbox Environment](#sandbox-environment)):
 
-http://localhost:3001/api/2024-01/merchant
+```
+https://sandbox.flashbird.ca/api/2024-01/merchant
+```
 
-Please send an email to andyfang@flashbird.ca to request to enable Flashbird API for your account. After Flashbird API is enabled, please log in Flashbird website, navigate to API Authtoken, and replace above base URL with actual one.
+For **production**, send an email to andyfang@flashbird.ca to request to enable the Flashbird API for your account. Once enabled, log in to the Flashbird website, navigate to API Authtoken, and use the production base URL and credentials shown there.
 
 
 ## Authentication
@@ -86,7 +88,7 @@ Content-Type: application/json
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 
 const data = {
   client_id: 'mock_client_id',
@@ -220,7 +222,7 @@ In the `packaging` array:
 
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const endpoint = 'shipments'; // The endpoint for creating shipments
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 
@@ -399,7 +401,7 @@ Provide the updated shipment details in the request body. The same fields as in 
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const shipmentNumber = '774017844640'; // Replace with the actual shipment number to be updated
 
@@ -486,7 +488,7 @@ Replace `YOUR_ACCESS_TOKEN` with the actual access token obtained from the authe
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const shipmentNumber = '774012744635'; // Replace with the actual shipment number to be deleted
 
@@ -551,9 +553,9 @@ Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authent
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
-const shipmentNumber = '774016144642'; // Replace with the actual shipment number to get tracking info
+const shipmentNumber = '776079999005'; // Live sandbox fixture (delivered); replace with your own shipment number
 
 async function getTracking() {
     try {
@@ -587,7 +589,7 @@ The response will provide detailed tracking information about the shipment.
 - **When Successful:**
 ```
 {
-  number: '774016144642',
+  number: '776079999005',
   isDelivered: 1,
   images: [
     {
@@ -648,7 +650,7 @@ Send an array of shipment numbers for which you need to create labels.
 
 ```json
 {
-  "numbers": ["774013244625"]
+  "numbers": ["776079999001"]
 }
 ```
 Replace the array elements with the actual shipment numbers.
@@ -657,10 +659,10 @@ Replace the array elements with the actual shipment numbers.
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const endpoint = 'labels'; // The endpoint for creating labels
-const shipmentNumbers = ['774017944644', '774017044643']; // Replace with actual shipment numbers
+const shipmentNumbers = ['776079999001', '776079999002']; // Live sandbox fixtures; replace with your own shipment numbers
 
 async function createLabels() {
     try {
@@ -757,7 +759,7 @@ Optional fields such as `name`, `company`, and `unit_no` can also be included fo
 **Sample JavaScript Request:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const endpoint = 'pickups'; // The endpoint for creating pickups
 const pickupData = {
@@ -844,7 +846,7 @@ Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authent
 **JavaScript Function to Delete a Pickup:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const endpoint = 'pickups'; // The endpoint for deleting pickups
 
@@ -904,7 +906,7 @@ Replace YOUR_ACCESS_TOKEN with the actual access token obtained from the authent
 **JavaScript Function to Get All Pickups:**
 ```javascript
 const fetch = require('node-fetch');
-const BASE_URL = 'http://localhost:3001/api/2024-01/merchant'; // Replace with actual base URL
+const BASE_URL = 'https://sandbox.flashbird.ca/api/2024-01/merchant'; // Sandbox — replace with your production base URL (from the Merchant Console) when going live
 const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with your actual access token
 const endpoint = 'pickups'; // The endpoint for retrieving all pickups
 
