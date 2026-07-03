@@ -19,6 +19,13 @@ Welcome to the Flashbird API documentation. The Flashbird API allows you to prog
   - [Delete a Pickup](#delete-a-pickup)
   - [Get All Pickups](#get-all-pickups)
   - [Get Rates](#get-rates)
+- [Tracking Webhooks](#tracking-webhooks)
+  - [Registering a Callback URL](#registering-a-callback-url)
+  - [Webhook Payload](#webhook-payload)
+  - [Verifying the Signature](#verifying-the-signature)
+  - [Delivery and Retry Policy](#delivery-and-retry-policy)
+  - [Sending a Test Event](#sending-a-test-event)
+- [Sandbox Environment](#sandbox-environment)
 
 
 ## Base URL
@@ -1080,6 +1087,150 @@ On successful calculation, the API returns the estimated shipping rate.
 ```
 
 The `price` is the estimated shipping cost based on the provided package details and current rate calculations, offering dynamic rate calculation directly from your application.
+
+
+## Tracking Webhooks
+
+In addition to polling the [Get Tracking](#get-tracking) endpoint, FlashBird can push tracking updates to your server in real time. Whenever a customer-visible tracking event occurs (shipment created, picked up, out for delivery, delivered, etc.), FlashBird sends an HTTP POST to your registered callback URL.
+
+### Registering a Callback URL
+
+Set your callback URL in the FlashBird Merchant Console (API Authtoken page), or contact andyfang@flashbird.ca to have it configured. When a callback URL is registered, a **webhook secret** is generated for your account. Both are shown alongside your API credentials in the Merchant Console, and the secret is also returned by the API credentials endpoint as `trackingWebhookSecret`.
+
+Your endpoint must:
+- Accept `POST` requests with a JSON body (`Content-Type: application/json`)
+- Respond with a `2xx` status code within 10 seconds. Any other response (or a timeout) is treated as a failed delivery and retried.
+
+### Webhook Payload
+
+Every webhook has the same envelope:
+
+```json
+{
+  "event": "trackingUpdate",
+  "data": {
+    "number": "774013244625",
+    "status": "delivered",
+    "eventTime": 1705867447106,
+    "isDelivered": 1,
+    "images": [
+      {
+        "type": "delivered",
+        "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/....jpeg"
+      },
+      {
+        "type": "signature",
+        "url": "https://flashbird.s3.us-west-2.amazonaws.com/driver/....jpeg"
+      }
+    ],
+    "logs": [
+      { "message": "Shipment created", "time": 1704152668668 },
+      { "message": "Picked up by FlashBird", "time": 1704153477466 },
+      { "message": "Out for delivery", "time": 1705475445880 },
+      { "message": "Parcel delivered", "time": 1705867447106 }
+    ]
+  }
+}
+```
+
+**Fields Description:**
+
+- `event`: Always `trackingUpdate`.
+- `data.number`: The shipment tracking number (12 digits).
+- `data.status`: Machine-readable status of the event that triggered this webhook. One of:
+
+| Status | Meaning |
+|---|---|
+| `created` | Shipment created / label generated |
+| `picked_up` | Picked up by FlashBird |
+| `in_transit` | Moving through the FlashBird network (sorting facility arrival, inter-city transit) |
+| `out_for_delivery` | On a vehicle for final delivery |
+| `delivered` | Delivered to the recipient |
+| `failed_attempt` | A delivery attempt failed; the shipment will be retried or resolved by dispatch |
+| `returned` | Returned to the merchant |
+| `cancelled` | Shipment cancelled |
+
+- `data.eventTime`: Epoch milliseconds of the event.
+- `data.isDelivered`: `1` if delivered, `0` otherwise.
+- `data.images`, `data.logs`, `data.dateOfBirth`: Same as the [Get Tracking](#get-tracking) response. Note that image URLs are temporary presigned links that expire within minutes — fetch them promptly if you need the images; treat them as best-effort on retried deliveries.
+
+**Request headers:**
+
+| Header | Description |
+|---|---|
+| `x-flashbird-topic` | Always `trackingUpdate` |
+| `x-flashbird-hmac-sha256` | Base64 HMAC-SHA256 signature of the raw request body (see below) |
+| `x-flashbird-delivery-id` | Unique ID for this delivery. Retries of the same event reuse the same ID — use it to deduplicate. |
+
+### Verifying the Signature
+
+Every webhook is signed with your account's webhook secret. Compute an HMAC-SHA256 of the **raw request body bytes** (before any JSON parsing/re-serialization) and compare it with the `x-flashbird-hmac-sha256` header:
+
+```javascript
+const crypto = require('crypto');
+const express = require('express');
+const app = express();
+
+const WEBHOOK_SECRET = 'whsec_...'; // from your Merchant Console / API credentials
+
+app.post('/flashbird/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+    const expected = crypto
+        .createHmac('sha256', WEBHOOK_SECRET)
+        .update(req.body) // raw body buffer
+        .digest('base64');
+
+    if (req.headers['x-flashbird-hmac-sha256'] !== expected) {
+        return res.status(401).send('invalid signature');
+    }
+
+    const payload = JSON.parse(req.body.toString('utf8'));
+    console.log('Tracking update:', payload.data.number, payload.data.status);
+    res.status(200).send('ok');
+});
+```
+
+Reject any request whose signature does not match.
+
+### Delivery and Retry Policy
+
+- A delivery is considered successful when your endpoint responds `2xx` within 10 seconds.
+- Failed deliveries are retried up to 5 times with increasing delays: 1 minute, 5 minutes, 30 minutes, 2 hours, and 6 hours after the previous attempt.
+- Retries re-send the **identical body and signature** with the same `x-flashbird-delivery-id`, so your handler can safely deduplicate.
+- Webhook ordering is not guaranteed under retries — use `data.eventTime` and the `logs` array (which always contains the full history) as the source of truth for state.
+
+### Sending a Test Event
+
+You can trigger a signed sample webhook at any time to verify your receiver:
+
+**Endpoint:**
+```
+GET /utils/test_tracking_event
+```
+
+Optional query parameter `callback` overrides the registered callback URL for this one test delivery:
+
+```
+GET /utils/test_tracking_event?callback=https://example.com/flashbird/webhook
+```
+
+Uses the same `Authorization: Bearer YOUR_ACCESS_TOKEN` header as all other endpoints. The response reports the delivery result:
+
+```json
+{ "rc": 0, "msg": "Success", "httpStatus": 200, "deliveryId": "6a476b74a3c47ef69b954af6" }
+```
+
+The test event is a fixed sample payload (`data.status: "delivered"`, tracking number `774013244625`) signed with your real webhook secret, so you can verify your HMAC validation end to end before going live.
+
+
+## Sandbox Environment
+
+FlashBird provides a sandbox environment for integration development and testing. It runs the same API and webhook pipeline as production against isolated test data — shipments created there are never dispatched or billed.
+
+```
+https://sandbox.flashbird.ca/api/2024-01/merchant
+```
+
+To get sandbox API credentials (client id/secret, access and refresh tokens, and webhook secret), contact andyfang@flashbird.ca. Sandbox accounts come pre-seeded with sample shipments covering every lifecycle state (`created`, `picked_up`, `in_transit`, `out_for_delivery`, `delivered`, `failed_attempt`) so you can exercise the tracking endpoint and webhook handling immediately, and FlashBird can advance a sandbox shipment through its lifecycle on request so you receive the corresponding webhooks in sequence.
 
 
 
