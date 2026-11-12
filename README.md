@@ -594,11 +594,11 @@ The response will provide detailed tracking information about the shipment.
   images: [
     {
       type: 'delivered',
-      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/7e2e1865-51b0-4c06-a6bd-ad2c2f4e3c501706501069430-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=AKIAWCK7U6RSCK6STQI3&Expires=1706502317&Signature=aPGZ2hO507dFlUGsDsq9Mzv7rA8%3D'
+      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/7e2e1865-51b0-4c06-a6bd-ad2c2f4e3c501706501069430-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=<access-key-id>&Expires=<unix-time>&Signature=<signature>'
     },
     {
       type: 'signature',
-      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/6325effd-30ea-42de-8981-7de1ebed41e91706501086923-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=AKIAWCK7U6RSCK6STQI3&Expires=1706502317&Signature=HjtUQWxLimLCZ9eikjjWVGPuSmg%3D'
+      url: 'https://flashbird.s3.us-west-2.amazonaws.com/driver/6325effd-30ea-42de-8981-7de1ebed41e91706501086923-65b723bae0ec7559e2da2878.jpeg?AWSAccessKeyId=<access-key-id>&Expires=<unix-time>&Signature=<signature>'
     }
   ],
   logs: [
